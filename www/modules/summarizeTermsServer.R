@@ -39,7 +39,7 @@ summarizeTermsServer <-
           ),
           tags$li(
             HTML(
-              '<b>Apply word2vec model:</b> The word2vec is a neural network, which learnd word associations from a large corpus of text.
+              '<b>Apply word2vec model:</b> The word2vec is a neural network, which learned word associations from a large corpus of text.
               Based on these word associations get groups of similar terms (e.g. "happiness" is similar to "joy").'
             )
           ),
