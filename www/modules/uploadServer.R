@@ -404,6 +404,22 @@ uploadServer <- function(id, parent, globals) {
         CAMfiles <-
           create_CAMfiles(datCAM = raw_CAM, reDeleted = TRUE)
 
+        # check if parsing CAMs was successful
+        if(is.null(CAMfiles)) {
+            showModal(
+            modalDialog(
+              title = "Invalid raw data",
+              paste0(
+                "The file you have uploaded doesn't appear to be a valid C.A.M.E.L. dataset or it contains only empty CAMs. Please check again."
+              ),
+              easyClose = TRUE,
+              footer = tagList(modalButton("Ok"))
+            )
+          )
+          v$dataUploaded <- "no"
+          return(NULL)
+        }
+
         ## trim whitespace
         CAMfiles[[1]]$text <-
           stringr::str_trim(string = CAMfiles[[1]]$text, side = "both")
