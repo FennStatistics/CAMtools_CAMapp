@@ -371,6 +371,7 @@ uploadServer <- function(id, parent, globals) {
 
       ## if CAMEL data (checked by .txt ending)
       if (all(stringr::str_detect(string = ext(), pattern = "txt"))) {
+        
         dat = as.list(
           vroom::vroom(
             file = input$upload$datapath,
@@ -383,7 +384,22 @@ uploadServer <- function(id, parent, globals) {
 
         raw_CAM <- list()
         for (i in 1:length(dat)) {
-          raw_CAM[[i]] <- jsonlite::fromJSON(txt = dat[[i]])
+          if(testIfJson(dat[[i]])) {
+            raw_CAM[[i]] <- jsonlite::fromJSON(txt = dat[[i]])
+          } else {
+            showModal(
+            modalDialog(
+              title = "Invalid raw data",
+              paste0(
+                "The file you have uploaded doesn't appear to be a valid C.A.M.E.L. dataset. Please check again."
+              ),
+              easyClose = TRUE,
+              footer = tagList(modalButton("Ok"))
+            )
+          )
+          v$dataUploaded <- "no"
+          return(NULL)
+          }
         }
         CAMfiles <-
           create_CAMfiles(datCAM = raw_CAM, reDeleted = TRUE)
