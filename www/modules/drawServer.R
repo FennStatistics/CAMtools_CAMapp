@@ -404,7 +404,7 @@ drawServer <- function(id, dataCAM, parent, globals) {
           if(!rv$CAMsdrawn){
             showModal(modalDialog(
               title = "No CAMs drawn",
-              paste0("Please drawn and/ or delete CAMs to continue."),
+              paste0("Please draw and / or delete CAMs to continue."),
               easyClose = TRUE,
               footer = tagList(
                 modalButton("Ok")
