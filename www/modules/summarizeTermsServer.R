@@ -973,11 +973,50 @@ overwriteData_getProtocols <- function(protocolCounter = NULL, protocolDetailedO
 
         # print(input$regularExp)
         if(nchar(x = input$regularExp) > 0){
-          words_out <- unique(globals$dataCAMsummarized[[1]]$text_summarized[
+
+          words_out <- tryCatch(
+            # expression
+            unique(globals$dataCAMsummarized[[1]]$text_summarized[
             str_detect(string = str_remove_all(string = globals$dataCAMsummarized[[1]]$text_summarized,
                                                pattern = "_positive$|_negative$|_neutral$|_ambivalent$"),
-                       pattern = input$regularExp, negate = FALSE)])
-        }else{
+                       pattern = input$regularExp, negate = FALSE)]),
+            warning = function(cond) {
+              cond <- gsub("Error in stri_detect_regex(string, pattern, negate = negate, opts_regex = opts(pattern)): ", "",
+                           cond$message)
+              showModal(
+                modalDialog(
+                  title = "Invalid search term",
+                  paste0(
+                    "The search term you have entered does not appear to be a valid regular expression: ",
+                    cond,
+                    " - Please check your syntax."
+                  ),
+                  easyClose = TRUE,
+                  footer = tagList(modalButton("Ok"))
+                )
+              )
+              return(NULL)
+            },
+            error = function(cond) {
+              cond <- gsub("Error in stri_detect_regex(string, pattern, negate = negate, opts_regex = opts(pattern)): ", "",
+                           cond$message)
+              showModal(
+                modalDialog(
+                  title = "Invalid search term",
+                  paste0(
+                    "The search term you have entered does not appear to be a valid regular expression: ",
+                    cond,
+                    " - Please check your syntax."
+                  ),
+                  easyClose = TRUE,
+                  footer = tagList(modalButton("Ok"))
+                )
+              )
+              return(NULL)
+            }
+          )
+
+        } else{
           words_out <- NULL
         }
 
