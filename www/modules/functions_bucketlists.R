@@ -42,17 +42,29 @@
             ## remove X_positive, ...
             tmp_labelout <-
               str_remove_all(string = labels_out$word[i], pattern = "_positive$|_negative$|_neutral$|_ambivalent$")
-            labels_list[[labels_out$word[i]]] <-
-              htmltools::tags$div(paste0(
-                tmp_labelout,
-                "   (N=",
-                tmp_N,
-                ", M=",
-                tmp_mean,
-                ", SD=",
-                tmp_SD,
-                ")"
-              ))
+            if(tmp_N > 1) {
+              labels_list[[labels_out$word[i]]] <-
+                htmltools::tags$div(paste0(
+                  tmp_labelout,
+                  "   (N=",
+                  tmp_N,
+                  ", M=",
+                  tmp_mean,
+                  ", SD=",
+                  tmp_SD,
+                  ")"
+                ))
+            } else {
+              labels_list[[labels_out$word[i]]] <-
+                htmltools::tags$div(paste0(
+                  tmp_labelout,
+                  "   (N=",
+                  tmp_N,
+                  ", M=",
+                  tmp_mean,
+                  ")"
+                ))
+            }
           }
         }
 
@@ -108,17 +120,29 @@
             ## remove X_positive, ...
             tmp_labelout <-
               str_remove_all(string = labels_out[i], pattern = "_positive$|_negative$|_neutral$|_ambivalent$")
-            labels_list[[labels_out[i]]] <-
-              htmltools::tags$div(paste0(
-                tmp_labelout,
-                "   (N=",
-                tmp_N,
-                ", M=",
-                tmp_mean,
-                ", SD=",
-                tmp_SD,
-                ")"
-              ))
+            if(tmp_N > 1) {
+              labels_list[[labels_out[i]]] <-
+                htmltools::tags$div(paste0(
+                  tmp_labelout,
+                  "   (N=",
+                  tmp_N,
+                  ", M=",
+                  tmp_mean,
+                  ", SD=",
+                  tmp_SD,
+                  ")"
+                ))
+            } else {
+              labels_list[[labels_out[i]]] <-
+                htmltools::tags$div(paste0(
+                  tmp_labelout,
+                  "   (N=",
+                  tmp_N,
+                  ", M=",
+                  tmp_mean,
+                  ")"
+                ))
+            }
           }
         }
           
@@ -184,17 +208,30 @@ getlabels_Synonyms <- function(typeLabels = NULL, getInput = NULL, counter = NUL
             round(x = sd(tmp_value), digits = 2)
           
           tmp_word <- str_remove_all(string = w, pattern = "_positive$|_negative$|_neutral$|_ambivalent$")
-          labels_list[[tmp_word]] <-
-            htmltools::tags$div(paste0(
-              tmp_word,
-              "   (N=",
-              tmp_N,
-              ", M=",
-              tmp_mean,
-              ", SD=",
-              tmp_SD,
-              ")"
-            ))
+          
+          if(tmp_N > 1) {
+            labels_list[[tmp_word]] <-
+              htmltools::tags$div(paste0(
+                tmp_word,
+                "   (N=",
+                tmp_N,
+                ", M=",
+                tmp_mean,
+                ", SD=",
+                tmp_SD,
+                ")"
+              ))
+          } else {
+            labels_list[[tmp_word]] <-
+              htmltools::tags$div(paste0(
+                tmp_word,
+                "   (N=",
+                tmp_N,
+                ", M=",
+                tmp_mean,
+                ")"
+              ))
+          }
         }
       }
     }
