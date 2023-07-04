@@ -41,13 +41,13 @@ drawServer <- function(id, dataCAM, parent, globals) {
           outUI$elements <- tagList(
             tags$h2("Draw CAMs using R (statistic software)"),
             tags$br(),
-            tags$div(HTML("After choosen your settings (in most cases the default is recommended), please click on the draw CAMs button 
+            tags$div(HTML("After choosing your settings (in most cases the default is recommended), please click on the draw CAMs button 
             to draw your CAMs. Please click only once and wait few seconds. If you have deleted a single or multiple CAMs please 
             click on this button again to update your drawn CAMs:"), style="font-size:14px"),
             tags$h3("Your Settings:"),
          tags$div(
             HTML(
-              'Please select if you want to drawn the concepts on the same positions as the participants, else a so called 
+              'Please select if you want to draw the concepts on the same positions as the participants, else a so called 
               <a href="https://en.wikipedia.org/wiki/Force-directed_graph_drawing" target="_blank">force-directed graph drawing algorithm</a> 
               is applied. Further you can change the relative size of the vertices and edges (only needed if you have large CAMs):'
             ),
@@ -182,15 +182,18 @@ drawServer <- function(id, dataCAM, parent, globals) {
           }
           ####
 
+          if(length(tmp_CAMs) > 0) {
+            rv$networkIndicators <- compute_indicatorsCAM(drawn_CAM = tmp_CAMs,
+                                  micro_degree = NULL,
+                                  micro_valence = NULL,
+                                  micro_centr_clo = NULL,
+                                  largestClique = FALSE)
+            rv$networkIndicators$assortativity_valence_macro[is.na(rv$networkIndicators$assortativity_valence_macro)] <- 0
 
-          rv$networkIndicators <- compute_indicatorsCAM(drawn_CAM = tmp_CAMs,
-                                micro_degree = NULL,
-                                micro_valence = NULL,
-                                micro_centr_clo = NULL,
-                                largestClique = FALSE)
-          rv$networkIndicators$assortativity_valence_macro[is.na(rv$networkIndicators$assortativity_valence_macro)] <- 0
-
-          tmp_CAMs
+            tmp_CAMs
+          } else {
+            NULL
+          }
         })
 
 
@@ -404,7 +407,7 @@ drawServer <- function(id, dataCAM, parent, globals) {
           if(!rv$CAMsdrawn){
             showModal(modalDialog(
               title = "No CAMs drawn",
-              paste0("Please drawn and/ or delete CAMs to continue."),
+              paste0("Please draw and / or delete CAMs to continue."),
               easyClose = TRUE,
               footer = tagList(
                 modalButton("Ok")

@@ -24,8 +24,8 @@ draw_CAM <- function(dat_merged = CAMfiles[[3]],
    ## check ids_CAMs argument + create ids_CAMs
   if(length(ids_CAMs) == 1 && ids_CAMs == "all"){
     ids_CAMs <- unique(dat_merged$CAM.x)
-  }else if(is.character(ids_CAMs) && (!all(ids_CAMs %in% unique(dat_merged$CAM.x) || 
-  !all(ids_CAMs %in% unique(dat_merged$participantCAM.x))))){
+  }else if(is.character(ids_CAMs) && (!all(ids_CAMs %in% unique(dat_merged$CAM.x)) ||
+  !all(ids_CAMs %in% unique(dat_merged$participantCAM.x)))){
     cat("Your specified ids are:", ids_CAMs, ", which is / are not matching the ids of the dataset (seperated by '//'):" ,"\n")
     cat(paste0(unique(dat_merged$CAM.x), collapse = " // "), "\n")
     stop("> Redefine ids")
@@ -52,6 +52,10 @@ draw_CAM <- function(dat_merged = CAMfiles[[3]],
   ## list for igraph objects
   list_g <- list()
   cat("processing", length(ids_CAMs), "CAMs...", "\n")
+
+  # as of yet, we have not checked whether parsing of the datasets was really successful,
+  # i.e., whether the data are really valid CAM datasets. workaround for now: exception handling
+  tryCatch({
   
   for(i in 1:length(ids_CAMs)){
     # cat("processing", i, "\n")
@@ -189,7 +193,7 @@ draw_CAM <- function(dat_merged = CAMfiles[[3]],
     
     list_g[[i]] <- g_own
   }
-    
+
     ## set participantCAM as default ID if unique and all IDs are provided
       if(length(unique(dat_merged$participantCAM.x)) == length(unique(dat_merged$CAM.x)) & 
           !any(dat_merged$participantCAM.x == "NO ID PROVIDED")){
@@ -205,8 +209,31 @@ draw_CAM <- function(dat_merged = CAMfiles[[3]],
             print("== ids_CAMs in drawnCAM")
        names(list_g) <- paste0(ids_CAMs)
           }
+  }, # tryCatch(): catch warnings
+  warning = function(cond) {
+    showModal(
+      modalDialog(
+        title = "Error while drawing CAMs",
+        "It appears that the data of at least one of the CAMs is invalid. This could happen e.g. if the data file is corrupt. Please make sure you have uploaded the right data set.",
+        easyClose = TRUE,
+        footer = tagList(modalButton("Ok"))
+      )
+    )
+  },
 
+  # tryCatch(): catch errors
+  error = function(cond) {
+    showModal(
+      modalDialog(
+        title = "Error while drawing CAMs",
+        "It appears that the data of at least one of the CAMs is invalid. This could happen e.g. if the data file is corrupt. Please make sure you have uploaded the right data set.",
+        easyClose = TRUE,
+        footer = tagList(modalButton("Ok"))
+      )
+    )
+  }
 
+  ) # tryCatch()
 
   return(list_g)
 }

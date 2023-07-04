@@ -79,6 +79,10 @@ create_CAMfiles <- function(datCAM = raw_CAM, reDeleted = TRUE, verbose=FALSE){
     }
   }
   
+  # all CAMs contain zero nodes or zero connectors
+  if(!exists("dat_nodes") || !exists("dat_connectors")) {
+    return(NULL)
+  }
   
   ## if true then remove non active nodes
   if(reDeleted){
