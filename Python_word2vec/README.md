@@ -2,7 +2,7 @@ Welcome to the word2vec Python Code:
 ===============================================
 
 # Overview
-To run the Python Code, you have two options:**without** or **with** a *graphical user interface* (GUI):
+To run the Python source code, you have two options: **without** or **with** a *graphical user interface* (GUI):
 
 ## *Without* GUI
 1. Make sure you have *python* and the libraries *spaCy* and *pandas* installed on your computer.
